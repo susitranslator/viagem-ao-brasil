@@ -2,54 +2,66 @@ const VALID_CODES = ["BRASIL2026", "LINGUASAT", "VIAGEM"];
 const ACCESS_KEY = "vab-access";
 const PROGRESS_KEY = "vab-progress";
 
-const DESTINATIONS = [
+const ETAPAS = [
+  { etapa: 1, name: "Chegada ao Brasil", emoji: "🛬" },
+  { etapa: 2, name: "As grandes cidades", emoji: "🏙️" }
+];
+
+const LESSONS = [
   {
     id: "aeroporto",
+    etapa: 1,
+    aula: 1,
     emoji: "✈️",
-    name: "Aeroporto",
-    subtitle: "Llegada a São Paulo",
-    desc: "Vocabulario de viaje, saludos y trámites en inmigración.",
-    file: "aeroporto.html"
+    name: "No aeroporto",
+    subtitle: "Aula 1",
+    desc: "Vocabulário do aeroporto, saudações e os verbos SER e ESTAR.",
+    file: "aeroporto.html",
+    ready: true
+  },
+  {
+    id: "imigracao",
+    etapa: 1,
+    aula: 2,
+    emoji: "🛂",
+    name: "Na imigração",
+    subtitle: "Aula 2",
+    desc: "Diálogo com o oficial de imigração e os verbos IR e VIR.",
+    file: "imigracao.html",
+    ready: true
+  },
+  {
+    id: "hotel",
+    etapa: 1,
+    aula: 3,
+    emoji: "🏨",
+    name: "No hotel",
+    subtitle: "Aula 3",
+    desc: "Vocabulário do quarto de hotel e o verbo TER.",
+    file: "hotel.html",
+    ready: true
   },
   {
     id: "saopaulo",
+    etapa: 2,
+    aula: 1,
     emoji: "🏙️",
     name: "São Paulo",
-    subtitle: "Negocios y reuniones",
-    desc: "Vocabulario empresarial, citas y comunicación profesional.",
-    file: "saopaulo.html"
-  },
-  {
-    id: "restaurante",
-    emoji: "🍽️",
-    name: "Restaurante",
-    subtitle: "Gastronomía brasileña",
-    desc: "Pedir comida, preguntar ingredientes y cultura gastronómica.",
-    file: "restaurante.html"
-  },
-  {
-    id: "reuniao",
-    emoji: "🤝",
-    name: "Reunião de Negócios",
-    subtitle: "Lenguaje profesional",
-    desc: "Negociaciones, presentaciones y vocabulario corporativo.",
-    file: "reuniao.html"
+    subtitle: "Aula 4",
+    desc: "Pontos turísticos, pratos típicos e curiosidades culturais.",
+    file: "saopaulo.html",
+    ready: false
   },
   {
     id: "rio",
+    etapa: 2,
+    aula: 2,
     emoji: "🏖️",
     name: "Rio de Janeiro",
-    subtitle: "Cultura y ocio",
-    desc: "Conversación informal, turismo y vida carioca.",
-    file: "rio.html"
-  },
-  {
-    id: "mercado",
-    emoji: "🛒",
-    name: "Mercado",
-    subtitle: "Compras y transacciones",
-    desc: "Números, precios, regateo y vocabulario de comercio.",
-    file: "mercado.html"
+    subtitle: "Aula 5",
+    desc: "Pontos turísticos, pratos típicos e curiosidades culturais.",
+    file: "rio.html",
+    ready: false
   }
 ];
 
@@ -84,13 +96,19 @@ function setLessonDone(id) {
   localStorage.setItem(PROGRESS_KEY, JSON.stringify(p));
 }
 
-function countDone(progress) {
-  return DESTINATIONS.filter(d => progress[d.id]).length;
+function readyLessons() {
+  return LESSONS.filter(l => l.ready);
 }
 
-function isUnlocked(index, progress) {
-  if (index === 0) return true;
-  return !!progress[DESTINATIONS[index - 1].id];
+function countDone(progress) {
+  return readyLessons().filter(l => progress[l.id]).length;
+}
+
+function isUnlocked(lesson, progress) {
+  const ready = readyLessons();
+  const index = ready.findIndex(l => l.id === lesson.id);
+  if (index <= 0) return true;
+  return !!progress[ready[index - 1].id];
 }
 
 // ── INDEX PAGE ───────────────────────────────────────────
@@ -102,7 +120,7 @@ function initIndex() {
   const logoutBtn = document.getElementById("logout-btn");
   const progressBar = document.getElementById("progress-bar");
   const progressText = document.getElementById("progress-text");
-  const grid = document.getElementById("destinations-grid");
+  const container = document.getElementById("etapas-container");
 
   if (!gate) return;
 
@@ -110,7 +128,7 @@ function initIndex() {
     gate.style.display = "flex";
   } else {
     gate.style.display = "none";
-    renderDestinations();
+    renderEtapas();
   }
 
   codeForm.addEventListener("submit", e => {
@@ -118,7 +136,7 @@ function initIndex() {
     const val = codeInput.value;
     if (authenticate(val)) {
       gate.style.display = "none";
-      renderDestinations();
+      renderEtapas();
     } else {
       codeInput.classList.add("error");
       codeError.textContent = "Código incorrecto. Inténtalo de nuevo.";
@@ -128,44 +146,76 @@ function initIndex() {
 
   if (logoutBtn) logoutBtn.addEventListener("click", logout);
 
-  function renderDestinations() {
+  function renderEtapas() {
     const progress = getProgress();
+    const ready = readyLessons();
     const done = countDone(progress);
-    const pct = Math.round((done / DESTINATIONS.length) * 100);
+    const pct = ready.length ? Math.round((done / ready.length) * 100) : 0;
 
     if (progressBar) progressBar.style.width = pct + "%";
-    if (progressText) progressText.textContent = `${done}/${DESTINATIONS.length} destinos`;
+    if (progressText) progressText.textContent = `${done}/${ready.length} aulas`;
 
-    grid.innerHTML = "";
+    container.innerHTML = "";
 
-    DESTINATIONS.forEach((dest, i) => {
-      const isDone = !!progress[dest.id];
-      const unlocked = isUnlocked(i, progress);
+    ETAPAS.forEach(etapa => {
+      const lessons = LESSONS.filter(l => l.etapa === etapa.etapa);
 
-      const card = document.createElement("div");
-      card.className = "dest-card" + (isDone ? " done" : "") + (!unlocked ? " locked" : "");
-
-      let badge;
-      if (isDone) {
-        badge = `<span class="badge done-badge">✓ Completado</span>`;
-      } else if (unlocked) {
-        badge = `<a class="badge start-badge" href="${dest.file}">Empezar →</a>`;
-      } else {
-        badge = `<span class="badge locked-badge">🔒 Bloqueado</span>`;
-      }
-
-      card.innerHTML = `
-        <div class="dest-number">Destino ${i + 1}</div>
-        <div class="dest-emoji">${dest.emoji}</div>
-        <div class="dest-info">
-          <h3>${dest.name}</h3>
-          <p class="dest-subtitle">${dest.subtitle}</p>
-          <p class="dest-desc">${dest.desc}</p>
-        </div>
-        <div class="dest-status">${badge}</div>
+      const block = document.createElement("section");
+      block.className = "etapa-block";
+      block.innerHTML = `
+        <h2 class="etapa-heading">${etapa.emoji} Etapa ${etapa.etapa}: ${etapa.name}</h2>
+        <div class="destinations-grid" data-etapa="${etapa.etapa}"></div>
       `;
+      const grid = block.querySelector(".destinations-grid");
 
-      grid.appendChild(card);
+      lessons.forEach(lesson => {
+        const card = document.createElement("div");
+
+        if (!lesson.ready) {
+          card.className = "dest-card locked";
+          card.innerHTML = `
+            <div class="dest-number">Aula ${lesson.aula}</div>
+            <div class="dest-emoji">${lesson.emoji}</div>
+            <div class="dest-info">
+              <h3>${lesson.name}</h3>
+              <p class="dest-subtitle">${lesson.subtitle}</p>
+              <p class="dest-desc">${lesson.desc}</p>
+            </div>
+            <div class="dest-status"><span class="badge locked-badge">🚧 Em construção</span></div>
+          `;
+          grid.appendChild(card);
+          return;
+        }
+
+        const isDone = !!progress[lesson.id];
+        const unlocked = isUnlocked(lesson, progress);
+
+        card.className = "dest-card" + (isDone ? " done" : "") + (!unlocked ? " locked" : "");
+
+        let badge;
+        if (isDone) {
+          badge = `<span class="badge done-badge">✓ Completado</span>`;
+        } else if (unlocked) {
+          badge = `<a class="badge start-badge" href="${lesson.file}">Empezar →</a>`;
+        } else {
+          badge = `<span class="badge locked-badge">🔒 Bloqueado</span>`;
+        }
+
+        card.innerHTML = `
+          <div class="dest-number">Aula ${lesson.aula}</div>
+          <div class="dest-emoji">${lesson.emoji}</div>
+          <div class="dest-info">
+            <h3>${lesson.name}</h3>
+            <p class="dest-subtitle">${lesson.subtitle}</p>
+            <p class="dest-desc">${lesson.desc}</p>
+          </div>
+          <div class="dest-status">${badge}</div>
+        `;
+
+        grid.appendChild(card);
+      });
+
+      container.appendChild(block);
     });
   }
 }

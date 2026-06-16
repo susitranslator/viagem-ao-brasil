@@ -219,6 +219,19 @@ a { color: inherit; text-decoration: none; }
   margin: 0 auto;
 }
 
+.etapa-block { margin-bottom: 48px; }
+.etapa-block:last-child { margin-bottom: 0; }
+
+.etapa-heading {
+  font-family: var(--serif);
+  font-size: 1.7rem;
+  font-weight: 400;
+  color: var(--green-700);
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--line);
+}
+
 .destinations-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
