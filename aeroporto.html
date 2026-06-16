@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Destino 1: Aeroporto — Viagem ao Brasil</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="lesson" data-lesson="aeroporto">
+
+  <!-- LESSON HEADER -->
+  <header class="lesson-header">
+    <a class="back-link" href="index.html">← Mapa de viaje</a>
+    <span class="lesson-title-header">✈️ Aeroporto — Llegada a São Paulo</span>
+    <nav class="lesson-steps">
+      <div class="step active" id="step-1">
+        <span class="step-num">1</span>
+        <span>Vocabulario</span>
+      </div>
+      <div class="step" id="step-2">
+        <span class="step-num">2</span>
+        <span>Diálogo</span>
+      </div>
+      <div class="step" id="step-3">
+        <span class="step-num">3</span>
+        <span>Quiz</span>
+      </div>
+    </nav>
+  </header>
+
+  <!-- LESSON CONTENT -->
+  <main class="lesson-main">
+
+    <!-- ─── PHASE 1: VOCABULARIO ─────────────────────── -->
+    <section class="phase active" id="phase-vocab">
+      <div class="phase-heading">
+        <h2>Vocabulario del aeropuerto</h2>
+        <p>Toca cada tarjeta para ver la traducción en español. Estudia las 8 palabras antes de continuar.</p>
+      </div>
+      <p class="vocab-hint-text">Toca las tarjetas para revelar la traducción</p>
+      <div class="vocab-grid">
+        <div class="vocab-card" tabindex="0">
+          <p class="vocab-pt">aeroporto</p>
+          <p class="vocab-hint-word">sustantivo</p>
+          <p class="vocab-es">aeropuerto</p>
+        </div>
+        <div class="vocab-card" tabindex="0">
+          <p class="vocab-pt">passaporte</p>
+          <p class="vocab-hint-word">sustantivo</p>
+          <p class="vocab-es">pasaporte</p>
+        </div>
+        <div class="vocab-card" tabindex="0">
+          <p class="vocab-pt">bagagem</p>
+          <p class="vocab-hint-word">sustantivo</p>
+          <p class="vocab-es">equipaje</p>
+        </div>
+        <div class="vocab-card" tabindex="0">
+          <p class="vocab-pt">chegadas</p>
+          <p class="vocab-hint-word">sustantivo (plural)</p>
+          <p class="vocab-es">llegadas</p>
+        </div>
+        <div class="vocab-card" tabindex="0">
+          <p class="vocab-pt">partidas</p>
+          <p class="vocab-hint-word">sustantivo (plural)</p>
+          <p class="vocab-es">salidas</p>
+        </div>
+        <div class="vocab-card" tabindex="0">
+          <p class="vocab-pt">voo</p>
+          <p class="vocab-hint-word">sustantivo</p>
+          <p class="vocab-es">vuelo</p>
+        </div>
+        <div class="vocab-card" tabindex="0">
+          <p class="vocab-pt">alfândega</p>
+          <p class="vocab-hint-word">sustantivo</p>
+          <p class="vocab-es">aduana</p>
+        </div>
+        <div class="vocab-card" tabindex="0">
+          <p class="vocab-pt">bem-vindo</p>
+          <p class="vocab-hint-word">expresión</p>
+          <p class="vocab-es">bienvenido</p>
+        </div>
+      </div>
+      <div class="lesson-nav">
+        <span></span>
+        <button class="btn btn-primary" id="vocab-next">Continuar al diálogo →</button>
+      </div>
+    </section>
+
+    <!-- ─── PHASE 2: DIÁLOGO ─────────────────────────── -->
+    <section class="phase" id="phase-dialogue">
+      <div class="phase-heading">
+        <h2>Diálogo en inmigración</h2>
+        <p>Completa el diálogo eligiendo la palabra correcta en cada espacio.</p>
+      </div>
+
+      <div class="dialogue-scene">
+        <p class="scene-label">🏢 Aeroporto Internacional de Guarulhos — Control de Imigração</p>
+
+        <div class="dialogue-line">
+          <span class="speaker">Agente</span>
+          <span class="line-text">Bom dia! Seu
+            <select class="fill-select" data-answer="passaporte" id="fill-1">
+              <option value="">— escolha —</option>
+              <option value="bagagem">bagagem</option>
+              <option value="passaporte">passaporte</option>
+              <option value="voo">voo</option>
+            </select>
+            , por favor.</span>
+        </div>
+
+        <div class="dialogue-line">
+          <span class="speaker">Você</span>
+          <span class="line-text">Aqui está. Sou da Espanha.</span>
+        </div>
+
+        <div class="dialogue-line">
+          <span class="speaker">Agente</span>
+          <span class="line-text">Qual foi o seu
+            <select class="fill-select" data-answer="voo" id="fill-2">
+              <option value="">— escolha —</option>
+              <option value="aeroporto">aeroporto</option>
+              <option value="alfândega">alfândega</option>
+              <option value="voo">voo</option>
+            </select>
+            de origem?</span>
+        </div>
+
+        <div class="dialogue-line">
+          <span class="speaker">Você</span>
+          <span class="line-text">Vim de Madri, voo LA 251.</span>
+        </div>
+
+        <div class="dialogue-line">
+          <span class="speaker">Agente</span>
+          <span class="line-text">Está aqui a turismo ou a trabalho?</span>
+        </div>
+
+        <div class="dialogue-line">
+          <span class="speaker">Você</span>
+          <span class="line-text">A trabalho. Tenho uma reunião em São Paulo.</span>
+        </div>
+
+        <div class="dialogue-line">
+          <span class="speaker">Agente</span>
+          <span class="line-text">Perfeito.
+            <select class="fill-select" data-answer="bem-vindo" id="fill-3">
+              <option value="">— escolha —</option>
+              <option value="partidas">partidas</option>
+              <option value="chegadas">chegadas</option>
+              <option value="bem-vindo">bem-vindo</option>
+            </select>
+            ao Brasil!</span>
+        </div>
+
+        <div class="dialogue-line">
+          <span class="speaker">Você</span>
+          <span class="line-text">Obrigado!</span>
+        </div>
+      </div>
+
+      <div id="dialogue-result" style="margin-bottom:20px;font-weight:700;color:var(--green-700);display:none"></div>
+
+      <div class="lesson-nav">
+        <button class="btn btn-secondary" id="dialogue-back">← Vocabulario</button>
+        <button class="btn btn-primary" id="dialogue-check">Comprobar respuestas</button>
+      </div>
+    </section>
+
+    <!-- ─── PHASE 3: QUIZ ────────────────────────────── -->
+    <section class="phase" id="phase-quiz">
+      <div class="phase-heading">
+        <h2>Quiz final</h2>
+        <p>Responde correctamente al menos 3 de 5 preguntas para completar este destino.</p>
+      </div>
+
+      <div class="quiz-question" id="q1">
+        <p class="question-num">Pregunta 1 de 5</p>
+        <p class="question-text">¿Cómo se dice "equipaje" en portugués de Brasil?</p>
+        <div class="options">
+          <button class="option" data-correct="false"><span class="option-letter">A</span>voo</button>
+          <button class="option" data-correct="false"><span class="option-letter">B</span>alfândega</button>
+          <button class="option" data-correct="true"><span class="option-letter">C</span>bagagem</button>
+          <button class="option" data-correct="false"><span class="option-letter">D</span>chegadas</button>
+        </div>
+      </div>
+
+      <div class="quiz-question" id="q2">
+        <p class="question-num">Pregunta 2 de 5</p>
+        <p class="question-text">¿Qué significa "bem-vindo"?</p>
+        <div class="options">
+          <button class="option" data-correct="false"><span class="option-letter">A</span>Hasta luego</button>
+          <button class="option" data-correct="true"><span class="option-letter">B</span>Bienvenido</button>
+          <button class="option" data-correct="false"><span class="option-letter">C</span>Por favor</button>
+          <button class="option" data-correct="false"><span class="option-letter">D</span>Gracias</button>
+        </div>
+      </div>
+
+      <div class="quiz-question" id="q3">
+        <p class="question-num">Pregunta 3 de 5</p>
+        <p class="question-text">En el aeropuerto, ¿dónde recoges tu maleta?</p>
+        <div class="options">
+          <button class="option" data-correct="false"><span class="option-letter">A</span>partidas</button>
+          <button class="option" data-correct="false"><span class="option-letter">B</span>alfândega</button>
+          <button class="option" data-correct="true"><span class="option-letter">C</span>chegadas</button>
+          <button class="option" data-correct="false"><span class="option-letter">D</span>passaporte</button>
+        </div>
+      </div>
+
+      <div class="quiz-question" id="q4">
+        <p class="question-num">Pregunta 4 de 5</p>
+        <p class="question-text">¿Cómo se dice "vuelo" en portugués?</p>
+        <div class="options">
+          <button class="option" data-correct="false"><span class="option-letter">A</span>avião</button>
+          <button class="option" data-correct="true"><span class="option-letter">B</span>voo</button>
+          <button class="option" data-correct="false"><span class="option-letter">C</span>viagem</button>
+          <button class="option" data-correct="false"><span class="option-letter">D</span>partida</button>
+        </div>
+      </div>
+
+      <div class="quiz-question" id="q5">
+        <p class="question-num">Pregunta 5 de 5</p>
+        <p class="question-text">¿Cuál es la traducción correcta de "alfândega"?</p>
+        <div class="options">
+          <button class="option" data-correct="false"><span class="option-letter">A</span>terminal</button>
+          <button class="option" data-correct="false"><span class="option-letter">B</span>aeropuerto</button>
+          <button class="option" data-correct="false"><span class="option-letter">C</span>pasaporte</button>
+          <button class="option" data-correct="true"><span class="option-letter">D</span>aduana</button>
+        </div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn btn-secondary" id="quiz-back">← Diálogo</button>
+        <button class="btn btn-primary" id="quiz-submit" disabled>Ver resultado</button>
+      </div>
+    </section>
+
+    <!-- ─── COMPLETION ───────────────────────────────── -->
+    <section class="completion" id="completion">
+      <div class="completion-emoji">🎉</div>
+      <h2 id="completion-title">¡Destino completado!</h2>
+      <p class="completion-score" id="completion-score"></p>
+      <p class="completion-msg" id="completion-msg">Has aprendido vocabulario de aeropuerto, practicado un diálogo de inmigración y superado el quiz. ¡Listo para São Paulo!</p>
+      <div class="completion-actions">
+        <a class="btn btn-primary" href="index.html">← Volver al mapa</a>
+        <a class="btn btn-secondary" href="saopaulo.html" id="next-dest-btn">Siguiente destino: São Paulo 🏙️</a>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="app.js"></script>
+  <script>
+  (function () {
+    // ── VOCABULARY ──────────────────────────────────────
+    const vocabCards = document.querySelectorAll(".vocab-card");
+    vocabCards.forEach(card => {
+      function toggle() { card.classList.toggle("revealed"); }
+      card.addEventListener("click", toggle);
+      card.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(); } });
+    });
+
+    document.getElementById("vocab-next").addEventListener("click", () => showPhase(2));
+
+    // ── DIALOGUE ───────────────────────────────────────
+    const fills = document.querySelectorAll(".fill-select");
+    const dialogueResult = document.getElementById("dialogue-result");
+
+    document.getElementById("dialogue-back").addEventListener("click", () => showPhase(1));
+    document.getElementById("dialogue-check").addEventListener("click", checkDialogue);
+
+    function checkDialogue() {
+      let allCorrect = true;
+      fills.forEach(sel => {
+        const correct = sel.dataset.answer === sel.value;
+        sel.classList.toggle("correct", correct);
+        sel.classList.toggle("incorrect", !correct && sel.value !== "");
+        if (!correct) allCorrect = false;
+      });
+
+      if (allCorrect) {
+        dialogueResult.style.display = "block";
+        dialogueResult.textContent = "✓ ¡Perfecto! Todas las respuestas son correctas.";
+        dialogueResult.style.color = "var(--green-700)";
+        setTimeout(() => showPhase(3), 1000);
+      } else {
+        dialogueResult.style.display = "block";
+        dialogueResult.textContent = "Hay algunas respuestas incorrectas. ¡Inténtalo de nuevo!";
+        dialogueResult.style.color = "#e53e3e";
+      }
+    }
+
+    // ── QUIZ ───────────────────────────────────────────
+    let quizAnswered = 0;
+    let quizCorrect = 0;
+    const totalQuestions = 5;
+    const quizSubmit = document.getElementById("quiz-submit");
+
+    document.querySelectorAll(".quiz-question").forEach(qBlock => {
+      const options = qBlock.querySelectorAll(".option");
+      options.forEach(opt => {
+        opt.addEventListener("click", () => {
+          if (qBlock.classList.contains("answered")) return;
+          qBlock.classList.add("answered");
+          quizAnswered++;
+
+          const isCorrect = opt.dataset.correct === "true";
+          if (isCorrect) {
+            opt.classList.add("correct");
+            quizCorrect++;
+          } else {
+            opt.classList.add("incorrect");
+            options.forEach(o => { if (o.dataset.correct === "true") o.classList.add("correct"); });
+          }
+          options.forEach(o => o.disabled = true);
+
+          if (quizAnswered === totalQuestions) quizSubmit.disabled = false;
+        });
+      });
+    });
+
+    document.getElementById("quiz-back").addEventListener("click", () => showPhase(2));
+    quizSubmit.addEventListener("click", showCompletion);
+
+    function showCompletion() {
+      const passed = quizCorrect >= 3;
+      document.getElementById("completion-title").textContent = passed ? "¡Destino completado! ✈️" : "Sigue practicando";
+      document.getElementById("completion-score").textContent = `${quizCorrect}/${totalQuestions} respuestas correctas`;
+      document.getElementById("completion-msg").textContent = passed
+        ? "Has aprendido vocabulario de aeropuerto, practicado un diálogo real de inmigración y superado el quiz. ¡Próxima parada: São Paulo!"
+        : `Necesitas al menos 3 respuestas correctas. ¡Vuelve a repasar el vocabulario y el diálogo e inténtalo de nuevo!`;
+
+      const nextBtn = document.getElementById("next-dest-btn");
+      if (!passed) nextBtn.style.display = "none";
+
+      if (passed) setLessonDone("aeroporto");
+
+      showPhase(null);
+      document.getElementById("completion").classList.add("show");
+    }
+
+    // ── PHASE SWITCHER ──────────────────────────────────
+    const phases = ["phase-vocab", "phase-dialogue", "phase-quiz"];
+    const steps = [document.getElementById("step-1"), document.getElementById("step-2"), document.getElementById("step-3")];
+
+    function showPhase(num) {
+      phases.forEach((id, i) => {
+        const el = document.getElementById(id);
+        el.classList.toggle("active", i + 1 === num);
+      });
+      steps.forEach((s, i) => {
+        s.classList.remove("active", "done");
+        if (i + 1 === num) s.classList.add("active");
+        else if (num !== null && i + 1 < num) s.classList.add("done");
+      });
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  })();
+  </script>
+</body>
+</html>

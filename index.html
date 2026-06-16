@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Viagem ao Brasil — LinguaGym</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="index">
+
+  <!-- ACCESS GATE -->
+  <div class="access-gate" id="access-gate" style="display:none">
+    <div class="gate-card">
+      <div class="gate-flag">🇧🇷</div>
+      <h1>Viagem ao Brasil</h1>
+      <p>Introduce tu código de acceso para comenzar tu viaje interactivo al portugués de Brasil.</p>
+      <form class="gate-form" id="code-form">
+        <input
+          type="text"
+          id="code-input"
+          placeholder="CÓDIGO DE ACCESO"
+          autocomplete="off"
+          spellcheck="false"
+          maxlength="20"
+        >
+        <button type="submit">Entrar →</button>
+        <p class="gate-error" id="code-error"></p>
+      </form>
+      <p class="gate-footer">¿No tienes código? <a href="mailto:info@linguasat.com">Contacta con Susi</a></p>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="vab-header">
+    <a class="vab-brand" href="../website/index.html" title="Volver a LinguaSAT">
+      <img src="../website/logo.png" alt="LinguaSAT" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span style="display:none;font-weight:900;color:var(--green-700);font-size:1.1rem">LinguaSAT</span>
+    </a>
+    <div class="vab-header-right">
+      <span class="progress-label">Tu progreso</span>
+      <div class="progress-bar-outer">
+        <div class="progress-bar-inner" id="progress-bar"></div>
+      </div>
+      <span class="progress-text" id="progress-text">0/6 destinos</span>
+      <button class="logout-btn" id="logout-btn" title="Cerrar sesión">Salir</button>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="vab-main">
+    <section class="hero-section">
+      <p class="eyebrow">LinguaGym · Viagem ao Brasil</p>
+      <h1>Tu viaje interactivo<br>al portugués</h1>
+      <p class="hero-sub">Aprende vocabulario, diálogos y cultura brasileña a través de seis destinos. Completa cada parada para desbloquear la siguiente.</p>
+    </section>
+
+    <div class="destinations-grid" id="destinations-grid">
+      <!-- Populated by JS -->
+    </div>
+  </main>
+
+  <footer class="vab-footer">
+    <p>Viagem ao Brasil · <a href="../website/index.html">LinguaSAT</a> · Susi de Albuquerque Teixeira</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
