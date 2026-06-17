@@ -1,5 +1,7 @@
 const VALID_CODES = ["BRASIL2026", "LINGUASAT", "VIAGEM"];
+const TEACHER_CODES = ["PROFESSORA2026"];
 const ACCESS_KEY = "vab-access";
+const ROLE_KEY = "vab-role";
 const PROGRESS_KEY = "vab-progress";
 
 const ETAPAS = [
@@ -69,9 +71,20 @@ function isAuthenticated() {
   return !!localStorage.getItem(ACCESS_KEY);
 }
 
+function isTeacher() {
+  return localStorage.getItem(ROLE_KEY) === "teacher";
+}
+
 function authenticate(code) {
-  if (VALID_CODES.includes(code.toUpperCase().trim())) {
+  const normalized = code.toUpperCase().trim();
+  if (TEACHER_CODES.includes(normalized)) {
     localStorage.setItem(ACCESS_KEY, "1");
+    localStorage.setItem(ROLE_KEY, "teacher");
+    return true;
+  }
+  if (VALID_CODES.includes(normalized)) {
+    localStorage.setItem(ACCESS_KEY, "1");
+    localStorage.setItem(ROLE_KEY, "student");
     return true;
   }
   return false;
@@ -79,6 +92,7 @@ function authenticate(code) {
 
 function logout() {
   localStorage.removeItem(ACCESS_KEY);
+  localStorage.removeItem(ROLE_KEY);
   window.location.href = "index.html";
 }
 
@@ -105,10 +119,21 @@ function countDone(progress) {
 }
 
 function isUnlocked(lesson, progress) {
+  if (isTeacher()) return true;
   const ready = readyLessons();
   const index = ready.findIndex(l => l.id === lesson.id);
   if (index <= 0) return true;
   return !!progress[ready[index - 1].id];
+}
+
+function injectTeacherBadge() {
+  if (!isTeacher()) return;
+  const header = document.querySelector(".vab-header, .lesson-header");
+  if (!header || header.querySelector(".teacher-badge")) return;
+  const badge = document.createElement("span");
+  badge.className = "badge teacher-badge";
+  badge.textContent = "👩‍🏫 Modo profesor";
+  header.insertBefore(badge, header.lastElementChild);
 }
 
 // ── INDEX PAGE ───────────────────────────────────────────
@@ -128,6 +153,7 @@ function initIndex() {
     gate.style.display = "flex";
   } else {
     gate.style.display = "none";
+    injectTeacherBadge();
     renderEtapas();
   }
 
@@ -136,6 +162,7 @@ function initIndex() {
     const val = codeInput.value;
     if (authenticate(val)) {
       gate.style.display = "none";
+      injectTeacherBadge();
       renderEtapas();
     } else {
       codeInput.classList.add("error");
@@ -194,7 +221,7 @@ function initIndex() {
 
         let badge;
         if (isDone) {
-          badge = `<span class="badge done-badge">✓ Completado</span>`;
+          badge = `<a class="badge done-badge" href="${lesson.file}">✓ Completado · Revisar</a>`;
         } else if (unlocked) {
           badge = `<a class="badge start-badge" href="${lesson.file}">Empezar →</a>`;
         } else {
@@ -226,6 +253,7 @@ function initLesson(lessonId) {
     window.location.href = "index.html";
     return;
   }
+  injectTeacherBadge();
 }
 
 // Check which page we're on and init accordingly
