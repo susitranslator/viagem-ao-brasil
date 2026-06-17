@@ -23,10 +23,14 @@
       </div>
       <div class="step" id="step-2">
         <span class="step-num">2</span>
-        <span>Gramática</span>
+        <span>Vídeo</span>
       </div>
       <div class="step" id="step-3">
         <span class="step-num">3</span>
+        <span>Gramática</span>
+      </div>
+      <div class="step" id="step-4">
+        <span class="step-num">4</span>
         <span>Quiz</span>
       </div>
     </nav>
@@ -86,11 +90,33 @@
       </div>
       <div class="lesson-nav">
         <span></span>
-        <button class="btn btn-primary" id="vocab-next">Continuar a la gramática →</button>
+        <button class="btn btn-primary" id="vocab-next">Continuar al vídeo →</button>
       </div>
     </section>
 
-    <!-- ─── PHASE 2: GRAMÁTICA (SER vs ESTAR) ───────── -->
+    <!-- ─── PHASE 2: VÍDEO DE PRESENTAÇÃO ────────────── -->
+    <section class="phase" id="phase-video">
+      <div class="phase-heading">
+        <h2>Vídeo: No aeroporto</h2>
+        <p>Mira esta presentación en vídeo antes de pasar a la gramática.</p>
+      </div>
+
+      <div class="video-block">
+        <div class="video-wrapper">
+          <video controls preload="metadata">
+            <source src="videos/no-aeroporto.mp4" type="video/mp4">
+            Tu navegador no soporta la reproducción de vídeo.
+          </video>
+        </div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn btn-secondary" id="video-back">← Vocabulario</button>
+        <button class="btn btn-primary" id="video-next">Continuar a la gramática →</button>
+      </div>
+    </section>
+
+    <!-- ─── PHASE 3: GRAMÁTICA (SER vs ESTAR) ───────── -->
     <section class="phase" id="phase-dialogue">
       <div class="phase-heading">
         <h2>Gramática: SER e ESTAR</h2>
@@ -159,12 +185,12 @@
       <div id="dialogue-result" style="margin-bottom:20px;font-weight:700;color:var(--green-700);display:none"></div>
 
       <div class="lesson-nav">
-        <button class="btn btn-secondary" id="dialogue-back">← Vocabulario</button>
+        <button class="btn btn-secondary" id="dialogue-back">← Vídeo</button>
         <button class="btn btn-primary" id="dialogue-check">Comprobar respuestas</button>
       </div>
     </section>
 
-    <!-- ─── PHASE 3: QUIZ ────────────────────────────── -->
+    <!-- ─── PHASE 4: QUIZ ────────────────────────────── -->
     <section class="phase" id="phase-quiz">
       <div class="phase-heading">
         <h2>Quiz final</h2>
@@ -261,11 +287,15 @@
 
     document.getElementById("vocab-next").addEventListener("click", () => showPhase(2));
 
+    // ── VIDEO ─────────────────────────────────────────
+    document.getElementById("video-back").addEventListener("click", () => showPhase(1));
+    document.getElementById("video-next").addEventListener("click", () => showPhase(3));
+
     // ── GRAMMAR FILL-IN ─────────────────────────────────
     const fills = document.querySelectorAll(".fill-select");
     const dialogueResult = document.getElementById("dialogue-result");
 
-    document.getElementById("dialogue-back").addEventListener("click", () => showPhase(1));
+    document.getElementById("dialogue-back").addEventListener("click", () => showPhase(2));
     document.getElementById("dialogue-check").addEventListener("click", checkDialogue);
 
     function checkDialogue() {
@@ -281,7 +311,7 @@
         dialogueResult.style.display = "block";
         dialogueResult.textContent = "✓ ¡Perfecto! Todas las respuestas son correctas.";
         dialogueResult.style.color = "var(--green-700)";
-        setTimeout(() => showPhase(3), 1000);
+        setTimeout(() => showPhase(4), 1000);
       } else {
         dialogueResult.style.display = "block";
         dialogueResult.textContent = "Hay algunas respuestas incorrectas. ¡Inténtalo de nuevo!";
@@ -317,7 +347,7 @@
       });
     });
 
-    document.getElementById("quiz-back").addEventListener("click", () => showPhase(2));
+    document.getElementById("quiz-back").addEventListener("click", () => showPhase(3));
     quizSubmit.addEventListener("click", showCompletion);
 
     function showCompletion() {
@@ -338,8 +368,8 @@
     }
 
     // ── PHASE SWITCHER ──────────────────────────────────
-    const phases = ["phase-vocab", "phase-dialogue", "phase-quiz"];
-    const steps = [document.getElementById("step-1"), document.getElementById("step-2"), document.getElementById("step-3")];
+    const phases = ["phase-vocab", "phase-video", "phase-dialogue", "phase-quiz"];
+    const steps = [document.getElementById("step-1"), document.getElementById("step-2"), document.getElementById("step-3"), document.getElementById("step-4")];
 
     function showPhase(num) {
       phases.forEach((id, i) => {
