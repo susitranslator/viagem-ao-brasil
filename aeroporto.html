@@ -27,10 +27,14 @@
       </div>
       <div class="step" id="step-3">
         <span class="step-num">3</span>
-        <span>Gramática</span>
+        <span>Escucha</span>
       </div>
       <div class="step" id="step-4">
         <span class="step-num">4</span>
+        <span>Gramática</span>
+      </div>
+      <div class="step" id="step-5">
+        <span class="step-num">5</span>
         <span>Quiz</span>
       </div>
     </nav>
@@ -112,11 +116,64 @@
 
       <div class="lesson-nav">
         <button class="btn btn-secondary" id="video-back">← Vocabulario</button>
-        <button class="btn btn-primary" id="video-next">Continuar a la gramática →</button>
+        <button class="btn btn-primary" id="video-next">Continuar a la escucha →</button>
       </div>
     </section>
 
-    <!-- ─── PHASE 3: GRAMÁTICA (SER vs ESTAR) ───────── -->
+    <!-- ─── PHASE 3: ESCUCHA (comprensión auditiva) ──── -->
+    <section class="phase" id="phase-listening">
+      <div class="phase-heading">
+        <h2>Escucha: No aeroporto</h2>
+        <p>Escucha el audio y responde a las preguntas. Puedes escucharlo varias veces.</p>
+      </div>
+
+      <div class="audio-block">
+        <div class="audio-wrapper">
+          <p class="audio-wrapper-label">🎧 No aeroporto</p>
+          <audio controls preload="metadata">
+            <source src="audios/aeroporto.wav" type="audio/wav">
+            Tu navegador no soporta la reproducción de audio.
+          </audio>
+        </div>
+      </div>
+
+      <div class="quiz-question" id="lq1">
+        <p class="question-num">Pregunta 1 de 3</p>
+        <p class="question-text">O que a atendente pediu primeiro ao viajante?</p>
+        <div class="options">
+          <button class="option" data-correct="false"><span class="option-letter">A</span>Você tem bagagem para despachar?</button>
+          <button class="option" data-correct="false"><span class="option-letter">B</span>O senhor prefere janela ou corredor?</button>
+          <button class="option" data-correct="true"><span class="option-letter">C</span>Passaporte e cartão de embarque</button>
+        </div>
+      </div>
+
+      <div class="quiz-question" id="lq2">
+        <p class="question-num">Pregunta 2 de 3</p>
+        <p class="question-text">Qual é o número do portão de embarque?</p>
+        <div class="options">
+          <button class="option" data-correct="false"><span class="option-letter">A</span>20</button>
+          <button class="option" data-correct="true"><span class="option-letter">B</span>15</button>
+          <button class="option" data-correct="false"><span class="option-letter">C</span>16</button>
+        </div>
+      </div>
+
+      <div class="quiz-question" id="lq3">
+        <p class="question-num">Pregunta 3 de 3</p>
+        <p class="question-text">Qual é o tamanho da mala do viajante?</p>
+        <div class="options">
+          <button class="option" data-correct="true"><span class="option-letter">A</span>Grande</button>
+          <button class="option" data-correct="false"><span class="option-letter">B</span>Média</button>
+          <button class="option" data-correct="false"><span class="option-letter">C</span>Pequena</button>
+        </div>
+      </div>
+
+      <div class="lesson-nav">
+        <button class="btn btn-secondary" id="listening-back">← Vídeo</button>
+        <button class="btn btn-primary" id="listening-next" disabled>Continuar a la gramática →</button>
+      </div>
+    </section>
+
+    <!-- ─── PHASE 4: GRAMÁTICA (SER vs ESTAR) ───────── -->
     <section class="phase" id="phase-dialogue">
       <div class="phase-heading">
         <h2>Gramática: SER e ESTAR</h2>
@@ -185,12 +242,12 @@
       <div id="dialogue-result" style="margin-bottom:20px;font-weight:700;color:var(--green-700);display:none"></div>
 
       <div class="lesson-nav">
-        <button class="btn btn-secondary" id="dialogue-back">← Vídeo</button>
+        <button class="btn btn-secondary" id="dialogue-back">← Escucha</button>
         <button class="btn btn-primary" id="dialogue-check">Comprobar respuestas</button>
       </div>
     </section>
 
-    <!-- ─── PHASE 4: QUIZ ────────────────────────────── -->
+    <!-- ─── PHASE 5: QUIZ ────────────────────────────── -->
     <section class="phase" id="phase-quiz">
       <div class="phase-heading">
         <h2>Quiz final</h2>
@@ -291,11 +348,39 @@
     document.getElementById("video-back").addEventListener("click", () => showPhase(1));
     document.getElementById("video-next").addEventListener("click", () => showPhase(3));
 
+    // ── LISTENING ────────────────────────────────────────
+    let listeningAnswered = 0;
+    const listeningNext = document.getElementById("listening-next");
+
+    document.querySelectorAll("#phase-listening .quiz-question").forEach(qBlock => {
+      const options = qBlock.querySelectorAll(".option");
+      options.forEach(opt => {
+        opt.addEventListener("click", () => {
+          if (qBlock.classList.contains("answered")) return;
+          qBlock.classList.add("answered");
+          listeningAnswered++;
+
+          if (opt.dataset.correct === "true") {
+            opt.classList.add("correct");
+          } else {
+            opt.classList.add("incorrect");
+            options.forEach(o => { if (o.dataset.correct === "true") o.classList.add("correct"); });
+          }
+          options.forEach(o => o.disabled = true);
+
+          if (listeningAnswered === 3) listeningNext.disabled = false;
+        });
+      });
+    });
+
+    document.getElementById("listening-back").addEventListener("click", () => showPhase(2));
+    listeningNext.addEventListener("click", () => showPhase(4));
+
     // ── GRAMMAR FILL-IN ─────────────────────────────────
     const fills = document.querySelectorAll(".fill-select");
     const dialogueResult = document.getElementById("dialogue-result");
 
-    document.getElementById("dialogue-back").addEventListener("click", () => showPhase(2));
+    document.getElementById("dialogue-back").addEventListener("click", () => showPhase(3));
     document.getElementById("dialogue-check").addEventListener("click", checkDialogue);
 
     function checkDialogue() {
@@ -311,7 +396,7 @@
         dialogueResult.style.display = "block";
         dialogueResult.textContent = "✓ ¡Perfecto! Todas las respuestas son correctas.";
         dialogueResult.style.color = "var(--green-700)";
-        setTimeout(() => showPhase(4), 1000);
+        setTimeout(() => showPhase(5), 1000);
       } else {
         dialogueResult.style.display = "block";
         dialogueResult.textContent = "Hay algunas respuestas incorrectas. ¡Inténtalo de nuevo!";
@@ -324,7 +409,7 @@
     let quizCorrect = 0;
     const quizSubmit = document.getElementById("quiz-submit");
 
-    document.querySelectorAll(".quiz-question").forEach(qBlock => {
+    document.querySelectorAll("#phase-quiz .quiz-question").forEach(qBlock => {
       const options = qBlock.querySelectorAll(".option");
       options.forEach(opt => {
         opt.addEventListener("click", () => {
@@ -347,7 +432,7 @@
       });
     });
 
-    document.getElementById("quiz-back").addEventListener("click", () => showPhase(3));
+    document.getElementById("quiz-back").addEventListener("click", () => showPhase(4));
     quizSubmit.addEventListener("click", showCompletion);
 
     function showCompletion() {
@@ -368,8 +453,8 @@
     }
 
     // ── PHASE SWITCHER ──────────────────────────────────
-    const phases = ["phase-vocab", "phase-video", "phase-dialogue", "phase-quiz"];
-    const steps = [document.getElementById("step-1"), document.getElementById("step-2"), document.getElementById("step-3"), document.getElementById("step-4")];
+    const phases = ["phase-vocab", "phase-video", "phase-listening", "phase-dialogue", "phase-quiz"];
+    const steps = [document.getElementById("step-1"), document.getElementById("step-2"), document.getElementById("step-3"), document.getElementById("step-4"), document.getElementById("step-5")];
 
     function showPhase(num) {
       phases.forEach((id, i) => {

@@ -27,10 +27,14 @@
       </div>
       <div class="step" id="step-3">
         <span class="step-num">3</span>
-        <span>Gramática</span>
+        <span>Escucha</span>
       </div>
       <div class="step" id="step-4">
         <span class="step-num">4</span>
+        <span>Gramática</span>
+      </div>
+      <div class="step" id="step-5">
+        <span class="step-num">5</span>
         <span>Quiz</span>
       </div>
     </nav>
@@ -112,11 +116,96 @@
 
       <div class="lesson-nav">
         <button class="btn btn-secondary" id="video-back">← Vocabulario</button>
-        <button class="btn btn-primary" id="video-next">Continuar a la gramática →</button>
+        <button class="btn btn-primary" id="video-next">Continuar a la escucha →</button>
       </div>
     </section>
 
-    <!-- ─── PHASE 3: GRAMÁTICA (TER) ─────────────────── -->
+    <!-- ─── PHASE 3: ESCUCHA (comprensión auditiva) ──── -->
+    <section class="phase" id="phase-listening">
+      <div class="phase-heading">
+        <h2>Escucha: No hotel</h2>
+        <p>Escucha el audio de una reserva en la recepción y completa los espacios con lo que oigas. Puedes escucharlo varias veces.</p>
+      </div>
+
+      <div class="audio-block">
+        <div class="audio-wrapper">
+          <p class="audio-wrapper-label">🎧 No hotel</p>
+          <audio controls preload="metadata">
+            <source src="audios/hotel.wav" type="audio/wav">
+            Tu navegador no soporta la reproducción de audio.
+          </audio>
+        </div>
+      </div>
+
+      <div class="dialogue-scene">
+        <p class="scene-label">📝 Completa con o que escutas no áudio</p>
+
+        <div class="dialogue-line">
+          <span class="line-text">A hóspede está no Hotel
+            <select class="fill-select" data-answer="Copacabana" id="lfill-1">
+              <option value="">— escolha —</option>
+              <option value="Copacabana">Copacabana</option>
+              <option value="Ipanema">Ipanema</option>
+            </select>
+            .</span>
+        </div>
+
+        <div class="dialogue-line">
+          <span class="line-text">O sobrenome da hóspede é
+            <select class="fill-select" data-answer="García" id="lfill-2">
+              <option value="">— escolha —</option>
+              <option value="García">García</option>
+              <option value="Martínez">Martínez</option>
+            </select>
+            .</span>
+        </div>
+
+        <div class="dialogue-line">
+          <span class="line-text">A hóspede reservou um quarto
+            <select class="fill-select" data-answer="duplo" id="lfill-3">
+              <option value="">— escolha —</option>
+              <option value="duplo">duplo</option>
+              <option value="single">single</option>
+            </select>
+            , ela vai ficar hospedada
+            <select class="fill-select" data-answer="nove" id="lfill-4">
+              <option value="">— escolha —</option>
+              <option value="nove">nove</option>
+              <option value="sete">sete</option>
+            </select>
+            noites.</span>
+        </div>
+
+        <div class="dialogue-line">
+          <span class="line-text">O horário do café da manhã é das
+            <select class="fill-select" data-answer="7 às 10hrs" id="lfill-5">
+              <option value="">— escolha —</option>
+              <option value="7 às 10hrs">7 às 10hrs</option>
+              <option value="8 às 11hrs">8 às 11hrs</option>
+            </select>
+            .</span>
+        </div>
+
+        <div class="dialogue-line">
+          <span class="line-text">O café da manhã é servido no
+            <select class="fill-select" data-answer="restaurante" id="lfill-6">
+              <option value="">— escolha —</option>
+              <option value="restaurante">restaurante</option>
+              <option value="quarto">quarto</option>
+            </select>
+            do hotel.</span>
+        </div>
+      </div>
+
+      <div id="listening-result" style="margin-bottom:20px;font-weight:700;color:var(--green-700);display:none"></div>
+
+      <div class="lesson-nav">
+        <button class="btn btn-secondary" id="listening-back">← Vídeo</button>
+        <button class="btn btn-primary" id="listening-check">Comprobar respuestas</button>
+      </div>
+    </section>
+
+    <!-- ─── PHASE 4: GRAMÁTICA (TER) ─────────────────── -->
     <section class="phase" id="phase-dialogue">
       <div class="phase-heading">
         <h2>Gramática: o verbo TER</h2>
@@ -185,12 +274,12 @@
       <div id="dialogue-result" style="margin-bottom:20px;font-weight:700;color:var(--green-700);display:none"></div>
 
       <div class="lesson-nav">
-        <button class="btn btn-secondary" id="dialogue-back">← Vídeo</button>
+        <button class="btn btn-secondary" id="dialogue-back">← Escucha</button>
         <button class="btn btn-primary" id="dialogue-check">Comprobar respuestas</button>
       </div>
     </section>
 
-    <!-- ─── PHASE 4: QUIZ (Verdadeiro/Falso) ────────── -->
+    <!-- ─── PHASE 5: QUIZ (Verdadeiro/Falso) ────────── -->
     <section class="phase" id="phase-quiz">
       <div class="phase-heading">
         <h2>Quiz: Verdadeiro ou Falso</h2>
@@ -309,11 +398,39 @@
     document.getElementById("video-back").addEventListener("click", () => showPhase(1));
     document.getElementById("video-next").addEventListener("click", () => showPhase(3));
 
+    // ── LISTENING FILL-IN ────────────────────────────────
+    const listeningFills = document.querySelectorAll("#phase-listening .fill-select");
+    const listeningResult = document.getElementById("listening-result");
+
+    document.getElementById("listening-back").addEventListener("click", () => showPhase(2));
+    document.getElementById("listening-check").addEventListener("click", checkListening);
+
+    function checkListening() {
+      let allCorrect = true;
+      listeningFills.forEach(sel => {
+        const correct = sel.dataset.answer === sel.value;
+        sel.classList.toggle("correct", correct);
+        sel.classList.toggle("incorrect", !correct && sel.value !== "");
+        if (!correct) allCorrect = false;
+      });
+
+      if (allCorrect) {
+        listeningResult.style.display = "block";
+        listeningResult.textContent = "✓ ¡Perfecto! Todas las respuestas son correctas.";
+        listeningResult.style.color = "var(--green-700)";
+        setTimeout(() => showPhase(4), 1000);
+      } else {
+        listeningResult.style.display = "block";
+        listeningResult.textContent = "Hay algunas respuestas incorrectas. ¡Escucha de nuevo e inténtalo otra vez!";
+        listeningResult.style.color = "#e53e3e";
+      }
+    }
+
     // ── GRAMMAR FILL-IN ─────────────────────────────────
-    const fills = document.querySelectorAll(".fill-select");
+    const fills = document.querySelectorAll("#phase-dialogue .fill-select");
     const dialogueResult = document.getElementById("dialogue-result");
 
-    document.getElementById("dialogue-back").addEventListener("click", () => showPhase(2));
+    document.getElementById("dialogue-back").addEventListener("click", () => showPhase(3));
     document.getElementById("dialogue-check").addEventListener("click", checkDialogue);
 
     function checkDialogue() {
@@ -329,7 +446,7 @@
         dialogueResult.style.display = "block";
         dialogueResult.textContent = "✓ ¡Perfecto! Todas las respuestas son correctas.";
         dialogueResult.style.color = "var(--green-700)";
-        setTimeout(() => showPhase(4), 1000);
+        setTimeout(() => showPhase(5), 1000);
       } else {
         dialogueResult.style.display = "block";
         dialogueResult.textContent = "Hay algunas respuestas incorrectas. ¡Inténtalo de nuevo!";
@@ -342,7 +459,7 @@
     let quizCorrect = 0;
     const quizSubmit = document.getElementById("quiz-submit");
 
-    document.querySelectorAll(".quiz-question").forEach(qBlock => {
+    document.querySelectorAll("#phase-quiz .quiz-question").forEach(qBlock => {
       const options = qBlock.querySelectorAll(".option");
       options.forEach(opt => {
         opt.addEventListener("click", () => {
@@ -365,7 +482,7 @@
       });
     });
 
-    document.getElementById("quiz-back").addEventListener("click", () => showPhase(3));
+    document.getElementById("quiz-back").addEventListener("click", () => showPhase(4));
     quizSubmit.addEventListener("click", showCompletion);
 
     function showCompletion() {
@@ -383,8 +500,8 @@
     }
 
     // ── PHASE SWITCHER ──────────────────────────────────
-    const phases = ["phase-vocab", "phase-video", "phase-dialogue", "phase-quiz"];
-    const steps = [document.getElementById("step-1"), document.getElementById("step-2"), document.getElementById("step-3"), document.getElementById("step-4")];
+    const phases = ["phase-vocab", "phase-video", "phase-listening", "phase-dialogue", "phase-quiz"];
+    const steps = [document.getElementById("step-1"), document.getElementById("step-2"), document.getElementById("step-3"), document.getElementById("step-4"), document.getElementById("step-5")];
 
     function showPhase(num) {
       phases.forEach((id, i) => {
