@@ -3,6 +3,7 @@ const TEACHER_CODES = ["PROFESSORA2026"];
 const ACCESS_KEY = "vab-access";
 const ROLE_KEY = "vab-role";
 const PROGRESS_KEY = "vab-progress";
+const TRAVELER_KEY = "vab-traveler";
 
 const ETAPAS = [
   { etapa: 1, name: "Chegada ao Brasil", emoji: "🛬" },
@@ -75,16 +76,26 @@ function isTeacher() {
   return localStorage.getItem(ROLE_KEY) === "teacher";
 }
 
+function ensureTravelerStarted() {
+  const t = getTraveler();
+  if (!t.startDate) {
+    t.startDate = new Date().toISOString();
+    localStorage.setItem(TRAVELER_KEY, JSON.stringify(t));
+  }
+}
+
 function authenticate(code) {
   const normalized = code.toUpperCase().trim();
   if (TEACHER_CODES.includes(normalized)) {
     localStorage.setItem(ACCESS_KEY, "1");
     localStorage.setItem(ROLE_KEY, "teacher");
+    ensureTravelerStarted();
     return true;
   }
   if (VALID_CODES.includes(normalized)) {
     localStorage.setItem(ACCESS_KEY, "1");
     localStorage.setItem(ROLE_KEY, "student");
+    ensureTravelerStarted();
     return true;
   }
   return false;
@@ -106,8 +117,13 @@ function getProgress() {
 
 function setLessonDone(id) {
   const p = getProgress();
-  p[id] = true;
+  p[id] = { done: true, date: new Date().toISOString() };
   localStorage.setItem(PROGRESS_KEY, JSON.stringify(p));
+}
+
+function lessonDate(progress, id) {
+  const entry = progress[id];
+  return entry && typeof entry === "object" ? entry.date : null;
 }
 
 function readyLessons() {
@@ -124,6 +140,35 @@ function isUnlocked(lesson, progress) {
   const index = ready.findIndex(l => l.id === lesson.id);
   if (index <= 0) return true;
   return !!progress[ready[index - 1].id];
+}
+
+// ── PASSPORT (per-Etapa stamps) ───────────────────────────
+function getTraveler() {
+  try {
+    return JSON.parse(localStorage.getItem(TRAVELER_KEY)) || {};
+  } catch {
+    return {};
+  }
+}
+
+function setTravelerName(name) {
+  const t = getTraveler();
+  t.name = name;
+  if (!t.startDate) t.startDate = new Date().toISOString();
+  localStorage.setItem(TRAVELER_KEY, JSON.stringify(t));
+}
+
+function isEtapaDone(etapaNum, progress) {
+  const lessons = LESSONS.filter(l => l.etapa === etapaNum);
+  if (!lessons.length || lessons.some(l => !l.ready)) return false;
+  return lessons.every(l => progress[l.id]);
+}
+
+function etapaStampDate(etapaNum, progress) {
+  const lessons = LESSONS.filter(l => l.etapa === etapaNum);
+  const dates = lessons.map(l => lessonDate(progress, l.id)).filter(Boolean);
+  if (!dates.length) return null;
+  return dates.sort().pop();
 }
 
 function injectTeacherBadge() {

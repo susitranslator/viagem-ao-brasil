@@ -209,6 +209,19 @@ a { color: inherit; text-decoration: none; }
 
 .logout-btn:hover { border-color: var(--green-700); color: var(--green-700); }
 
+.passport-link {
+  background: var(--green-700);
+  color: white;
+  border-radius: var(--radius);
+  padding: 7px 14px;
+  font-size: .88rem;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: background .2s;
+}
+
+.passport-link:hover { background: var(--green-500); }
+
 /* ── TRIP MAP ────────────────────────────────────────── */
 .vab-main { max-width: 1100px; margin: 0 auto; padding: 56px 24px 80px; }
 
@@ -790,6 +803,161 @@ a { color: inherit; text-decoration: none; }
 
 .vab-footer a { color: var(--green-700); font-weight: 700; }
 
+/* ── PASSPORT ────────────────────────────────────────── */
+.passport-id-card {
+  background: white;
+  border: 1.5px solid var(--line);
+  border-radius: 16px;
+  padding: 32px;
+  margin-bottom: 48px;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  box-shadow: 0 12px 32px rgba(7,61,27,.08);
+}
+
+.passport-id-photo {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background: var(--green-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.6rem;
+  flex-shrink: 0;
+  border: 3px solid var(--green-700);
+}
+
+.passport-id-fields { flex: 1; min-width: 240px; }
+
+.passport-id-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.passport-id-label {
+  font-size: .72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--muted);
+  min-width: 110px;
+}
+
+.passport-id-value {
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  color: var(--ink);
+}
+
+.passport-name-input {
+  border: none;
+  border-bottom: 2px solid var(--green-500);
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  padding: 2px 4px;
+  background: transparent;
+  color: var(--ink);
+  outline: none;
+  min-width: 220px;
+}
+
+.stamps-heading { margin-bottom: 8px; }
+
+.stamps-subtext {
+  color: var(--muted);
+  font-size: .95rem;
+  margin-bottom: 32px;
+}
+
+.stamps-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+}
+
+.stamp-card {
+  background: white;
+  border: 1.5px solid var(--line);
+  border-radius: 16px;
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+}
+
+.stamp-circle {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border: 4px double var(--green-700);
+  color: var(--green-700);
+  transform: rotate(-7deg);
+  position: relative;
+}
+
+.stamp-circle::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px dashed var(--green-700);
+  border-radius: 50%;
+}
+
+.stamp-circle-emoji { font-size: 1.8rem; }
+
+.stamp-circle-label {
+  font-size: .72rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  line-height: 1.2;
+  padding: 0 14px;
+}
+
+.stamp-circle-approved {
+  font-size: .68rem;
+  font-weight: 900;
+  letter-spacing: .1em;
+}
+
+.stamp-card.pending .stamp-circle {
+  border-color: var(--line);
+  border-style: dashed;
+  color: var(--muted);
+  transform: rotate(0deg);
+}
+
+.stamp-card.pending .stamp-circle::before { display: none; }
+
+.stamp-card-title {
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  color: var(--ink);
+}
+
+.stamp-card-date {
+  font-size: .82rem;
+  font-weight: 700;
+  color: var(--green-700);
+}
+
+.stamp-card-pending-text {
+  font-size: .85rem;
+  color: var(--muted);
+}
+
 /* ── RESPONSIVE ──────────────────────────────────────── */
 @media (max-width: 768px) {
   .destinations-grid { grid-template-columns: 1fr; }
@@ -800,4 +968,9 @@ a { color: inherit; text-decoration: none; }
   .progress-bar-outer { max-width: 120px; }
   .vab-header, .lesson-header { padding: 0 16px; }
   .dialogue-scene { padding: 20px; }
+  .stamps-grid { grid-template-columns: 1fr; }
+  .passport-id-card { flex-direction: column; text-align: center; }
+  .passport-id-row { justify-content: center; }
+  .passport-link { padding: 7px 10px; font-size: 0; }
+  .passport-link::before { content: "🛂"; font-size: 1.1rem; }
 }

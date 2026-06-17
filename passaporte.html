@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meu Passaporte — Viagem ao Brasil</title>
+  <meta name="robots" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="passport">
+
+  <!-- TROPICAL BACKGROUND -->
+  <div class="bg-blob bg-blob-green"></div>
+  <div class="bg-blob bg-blob-yellow"></div>
+  <div class="bg-blob bg-blob-blue"></div>
+
+  <!-- HEADER -->
+  <header class="vab-header">
+    <a class="vab-brand" href="../website/index.html" title="Volver a LinguaSAT">
+      <img src="logo-original.png" alt="LinguaSAT" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span style="display:none;font-weight:900;color:var(--green-700);font-size:1.1rem">LinguaSAT</span>
+    </a>
+    <div class="vab-header-right">
+      <a class="back-link" href="index.html">← Mapa de viaje</a>
+      <button class="logout-btn" id="logout-btn" title="Cerrar sesión">Salir</button>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="vab-main">
+    <section class="hero-section">
+      <p class="hero-icon">🛂 📘 ✈️</p>
+      <p class="eyebrow">Documento simbólico do explorador</p>
+      <h1>Passaporte</h1>
+      <p class="hero-sub">Da língua portuguesa e da cultura brasileira. Cada etapa completada da Viagem ao Brasil te dá un nuevo carimbo.</p>
+      <div class="hero-divider"></div>
+    </section>
+
+    <!-- IDENTIFICAÇÃO DO VIAJANTE -->
+    <div class="passport-id-card">
+      <div class="passport-id-photo">🧑‍✈️</div>
+      <div class="passport-id-fields">
+        <div class="passport-id-row">
+          <span class="passport-id-label">Nome</span>
+          <input type="text" id="traveler-name" class="passport-name-input" placeholder="Escribe tu nombre" maxlength="60">
+        </div>
+        <div class="passport-id-row">
+          <span class="passport-id-label">Data de início</span>
+          <span class="passport-id-value" id="traveler-start-date">—</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- REGISTRO DE CARIMBOS -->
+    <h2 class="etapa-heading stamps-heading">📖 Registro de carimbos</h2>
+    <p class="stamps-subtext">Cada destino representa uma unidade e experiência de viagem. Completa todas as aulas de uma etapa para ganhar o carimbo.</p>
+
+    <div class="stamps-grid" id="stamps-grid">
+      <!-- Populated by JS -->
+    </div>
+  </main>
+
+  <footer class="vab-footer">
+    <p>Viagem ao Brasil · <a href="../website/index.html">LinguaSAT</a> · Susi de Albuquerque Teixeira</p>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+  (function () {
+    if (!isAuthenticated()) {
+      window.location.href = "index.html";
+      return;
+    }
+
+    injectTeacherBadge();
+
+    const logoutBtn = document.getElementById("logout-btn");
+    if (logoutBtn) logoutBtn.addEventListener("click", logout);
+
+    const nameInput = document.getElementById("traveler-name");
+    const startDateEl = document.getElementById("traveler-start-date");
+    const stampsGrid = document.getElementById("stamps-grid");
+
+    const traveler = getTraveler();
+    nameInput.value = traveler.name || "";
+    startDateEl.textContent = traveler.startDate
+      ? new Date(traveler.startDate).toLocaleDateString("es-ES", { day: "2-digit", month: "long", year: "numeric" })
+      : "—";
+
+    nameInput.addEventListener("input", () => setTravelerName(nameInput.value.trim()));
+
+    const progress = getProgress();
+
+    stampsGrid.innerHTML = "";
+    ETAPAS.forEach(etapa => {
+      const done = isEtapaDone(etapa.etapa, progress);
+      const lessons = LESSONS.filter(l => l.etapa === etapa.etapa);
+
+      const card = document.createElement("div");
+      card.className = "stamp-card" + (done ? "" : " pending");
+
+      if (done) {
+        const date = etapaStampDate(etapa.etapa, progress);
+        const dateText = date
+          ? new Date(date).toLocaleDateString("es-ES", { day: "2-digit", month: "short", year: "numeric" })
+          : "";
+        card.innerHTML = `
+          <div class="stamp-circle">
+            <span class="stamp-circle-emoji">${etapa.emoji}</span>
+            <span class="stamp-circle-label">${etapa.name}</span>
+            <span class="stamp-circle-approved">★ Aprovado ★</span>
+          </div>
+          <p class="stamp-card-title">Etapa ${etapa.etapa}: ${etapa.name}</p>
+          <p class="stamp-card-date">Carimbado em ${dateText}</p>
+        `;
+      } else {
+        const missing = lessons.filter(l => !progress[l.id]).map(l => l.name).join(", ");
+        const pendingText = lessons.some(l => !l.ready)
+          ? "Esta etapa ainda está em construção."
+          : `Falta completar: ${missing}`;
+        card.innerHTML = `
+          <div class="stamp-circle">
+            <span class="stamp-circle-emoji">${etapa.emoji}</span>
+            <span class="stamp-circle-label">${etapa.name}</span>
+            <span class="stamp-circle-approved">Pendente</span>
+          </div>
+          <p class="stamp-card-title">Etapa ${etapa.etapa}: ${etapa.name}</p>
+          <p class="stamp-card-pending-text">${pendingText}</p>
+        `;
+      }
+
+      stampsGrid.appendChild(card);
+    });
+  })();
+  </script>
+</body>
+</html>
