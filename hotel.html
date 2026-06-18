@@ -388,6 +388,7 @@
     const TOTAL_QUESTIONS = 8;
     const PASS_THRESHOLD = 5;
     const LESSON_ID = "hotel";
+    const teacherMode = isTeacher();
 
     // ── VOCABULARY ──────────────────────────────────────
     const vocabCards = document.querySelectorAll(".vocab-card");
@@ -411,6 +412,7 @@
     document.getElementById("listening-check").addEventListener("click", checkListening);
 
     function checkListening() {
+      if (teacherMode) { showPhase(4); return; }
       let allCorrect = true;
       listeningFills.forEach(sel => {
         const correct = sel.dataset.answer === sel.value;
@@ -439,6 +441,7 @@
     document.getElementById("dialogue-check").addEventListener("click", checkDialogue);
 
     function checkDialogue() {
+      if (teacherMode) { showPhase(5); return; }
       let allCorrect = true;
       fills.forEach(sel => {
         const correct = sel.dataset.answer === sel.value;
@@ -463,6 +466,7 @@
     let quizAnswered = 0;
     let quizCorrect = 0;
     const quizSubmit = document.getElementById("quiz-submit");
+    if (teacherMode) quizSubmit.disabled = false;
 
     document.querySelectorAll("#phase-quiz .quiz-question").forEach(qBlock => {
       const options = qBlock.querySelectorAll(".option");
@@ -491,7 +495,7 @@
     quizSubmit.addEventListener("click", showCompletion);
 
     function showCompletion() {
-      const passed = quizCorrect >= PASS_THRESHOLD;
+      const passed = teacherMode || quizCorrect >= PASS_THRESHOLD;
       document.getElementById("completion-title").textContent = passed ? "¡Etapa 1 completada! 🏨" : "Sigue practicando";
       document.getElementById("completion-score").textContent = `${quizCorrect}/${TOTAL_QUESTIONS} respuestas correctas`;
       document.getElementById("completion-msg").textContent = passed
@@ -507,6 +511,13 @@
     // ── PHASE SWITCHER ──────────────────────────────────
     const phases = ["phase-vocab", "phase-video", "phase-listening", "phase-dialogue", "phase-quiz"];
     const steps = [document.getElementById("step-1"), document.getElementById("step-2"), document.getElementById("step-3"), document.getElementById("step-4"), document.getElementById("step-5")];
+
+    if (teacherMode) {
+      steps.forEach((s, i) => {
+        s.style.cursor = "pointer";
+        s.addEventListener("click", () => showPhase(i + 1));
+      });
+    }
 
     function showPhase(num) {
       phases.forEach((id, i) => {
